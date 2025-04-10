@@ -19,16 +19,19 @@ const Form = () => {
         const formattedData = {
           firstName: data.firstName,
           lastName: data.lastName,
-          emailId: data.emailId, 
+          emailId: data.emailId,
+          emailUpdates: data.emailUpdates || false, 
           businessName: data.businessName,
           city: data.city,
           state: data.state,
           zipcode: data.zipcode,
           role: data.role,
+          lookingFor: data.lookingFor,
+          comments: data.comments
         };
     
         try {
-          const response = await fetch('http://localhost:5000/api/users/create', {
+          const response = await fetch('http://localhost:4000/api/users/create', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(formattedData),
@@ -91,7 +94,11 @@ const Form = () => {
             <FormGroup>
               <FormControlLabel 
               control={
-                <Checkbox defaultChecked color="success"/>} label="* I would like email updates"/>
+                <Checkbox {...register('emailUpdates')} 
+                color="success"/>
+                } 
+                label="* I would like email updates"
+                />
             </FormGroup>
             </div>
             </div>
@@ -210,15 +217,16 @@ const Form = () => {
                 error={!!errors.lookingFor}
                 sx={{width: 325}}
               >
-                <MenuItem value="venue">Venues</MenuItem>
-                <MenuItem value="artist">Artists</MenuItem>
-                <MenuItem value="promoter">Promoters</MenuItem>
+                <MenuItem value="venues">Venues</MenuItem>
+                <MenuItem value="artists">Artists</MenuItem>
+                <MenuItem value="promoters">Promoters</MenuItem>
               </Select>
               {errors.role && <Typography color="error">{errors.role.message}</Typography>}
             </FormControl>
             </div>
             <div className='form-textbox'>
             <TextField
+              {...register('comments')}
               id="outlined-multiline-static"
               label="Comments"
               multiline
